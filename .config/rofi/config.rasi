@@ -1,0 +1,6 @@
+configuration {
+    // modi: "drun,run,window";
+    font: "Liga SFMono 12";
+    show-icons: true;
+    icon-theme: "Papirus";
+}
