@@ -1,12 +1,15 @@
 local wezterm = require("wezterm")
 local config = {}
 
-config.color_scheme = "tokyonight_night"
+-- config.color_scheme = "tokyonight_night"
+config.color_scheme = "Catppuccin Mocha"
 config.cursor_blink_rate = 500
 config.enable_scroll_bar = true
 config.font_size = 14.0
 config.alternate_buffer_wheel_scroll_speed = 10
 config.window_background_opacity = 1.0
+config.term = "xterm-256color"
+
 
 config.leader = { key = "Space", mods = "CTRL", timeout_milliseconds = 2000 }
 config.keys = {
@@ -43,7 +46,8 @@ config.colors = {
 }
 -- config.font = wezterm.font('JetBrainsMono Nerd Font Mono', {weight= 'DemiBold'})
 -- config.font = wezterm.font("Liga SFMono Nerd Font", { weight = "DemiBold" })
-config.font = wezterm.font("Fira Code", { weight = "DemiBold" })
+-- config.font = wezterm.font("Fira Code", { weight = "DemiBold" })
+config.font = wezterm.font("Fira Code")
 config.unix_domains = {
 	{
 		name = "unix",
