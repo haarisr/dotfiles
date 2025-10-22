@@ -22,7 +22,6 @@ return {
         { "saghen/blink.cmp" },
     },
     config = function()
-        local lspconfig = require("lspconfig")
         local capabilities = require("blink.cmp").get_lsp_capabilities()
         -- capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
         local servers = require("mason-lspconfig").get_installed_servers()
@@ -38,7 +37,14 @@ return {
                     },
                 }
             end
-            if server_name == "pyright" or server_name == "basedpyright" then
+            if server_name == "ty" then
+                settings = {
+                    ty = {
+                        disableLanguageServices = true,
+                    },
+                }
+            end
+            if server_name == "pyright" or server_name == "basedpyright" or server_name == "ty" then
                 root_dir = function(bufnr, cb)
                     local root = vim.fs.root(bufnr, { "uv.lock" })
                         or vim.fs.root(bufnr, { "pyproject.toml" })
@@ -52,10 +58,6 @@ return {
                 capabilities.offsetEncoding = { "utf-16" }
             end
 
-            -- lspconfig[server_name].setup({
-            --     capabilities = capabilities,
-            --     settings = settings,
-            -- })
             vim.lsp.config(server_name, {
                 capabilities = capabilities,
                 settings = settings,
@@ -63,27 +65,6 @@ return {
             })
             vim.lsp.enable(server_name)
         end
-
-        -- vim.api.nvim_create_autocmd("FileType", {
-        --     -- This handler will fire when the buffer's 'filetype' is "python"
-        --     pattern = "python",
-        --     callback = function(args)
-        --         vim.lsp.config({
-        --             name = "ty",
-        --             -- cmd = { '/home/haaris/ruff/target/debug/ty', '--current-directory', '.', '--watch', '-vv', 'server' },
-        --             cmd = { "/home/haarisr/ruff/target/debug/ty", "server" },
-        --             -- Set the "root directory" to the parent directory of the file in the
-        --             -- current buffer (`args.buf`) that contains either a "setup.py" or a
-        --             -- "pyproject.toml" file. Files that share a root directory will reuse
-        --             -- the connection to the same LSP server.
-        --             root_dir = vim.fs.root(args.buf, { "setup.py", "pyproject.toml" }),
-        --         })
-        --         vim.lsp.enable("ty")
-        --     end,
-        -- })
-        vim.lsp.enable("ty")
-
-        -- vim.lsp.inlay_hint.enable()
 
         local severity_levels = {
             vim.diagnostic.severity.ERROR,
