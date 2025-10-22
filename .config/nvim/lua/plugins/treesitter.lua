@@ -9,45 +9,6 @@ return {
         },
         "nvim-treesitter/nvim-treesitter-context",
     },
-    opts = {
-        sync_install = false,
-        auto_install = true,
-        highlight = {
-            enable = true,
-            additional_vim_regex_highlighting = false,
-        },
-        incremental_selection = {
-            enable = true,
-            keymaps = {
-                init_selection = "<C-space>",
-                node_incremental = "<C-space>",
-                scope_incremental = "<nop>",
-                node_decremental = "<bs>",
-            },
-        },
-        textobjects = {
-            select = {
-                lookahead = true,
-            },
-            -- swap = {
-            --     enable = true,
-            --     swap_next = {
-            --         ['<leader>a'] = '@parameter.inner',
-            --     },
-            --     swap_previous = {
-            --         ['<leader>A'] = '@parameter.inner',
-            --     },
-            -- },
-            lsp_interop = {
-                enable = true,
-                border = "none",
-                peek_definition_code = {
-                    ["<leader>df"] = "@function.outer",
-                    ["<leader>dF"] = "@class.outer",
-                },
-            },
-        },
-    },
     init = function()
         vim.api.nvim_create_autocmd("FileType", {
             callback = function(args)

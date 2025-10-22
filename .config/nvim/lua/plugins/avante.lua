@@ -3,7 +3,7 @@ return {
     event = "VeryLazy",
     version = false, -- Never set this value to "*"! Never!
     init = function()
-        vim.g.root_spec = { { ".git" }, "lsp", "cwd" }
+        -- vim.g.root_spec = { { ".git" }, "lsp", "cwd" }
     end,
     opts = {
         -- add any opts here
