@@ -36,8 +36,6 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$CUDA_HOME/lib64"
 
-
-
 # eval "$(oh-my-posh init zsh --config "~/zen.toml")"
 # zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
@@ -89,7 +87,6 @@ fi
 
 eval "$(starship init zsh)"
 
-source ~/.zshrc.work
 
 # vf() {
 #     local file
@@ -99,4 +96,6 @@ source ~/.zshrc.work
 #     fi
 # }
 
-
+# opencode
+export PATH=/home/haarisr/.opencode/bin:$PATH
+source ~/.zshrc.work
