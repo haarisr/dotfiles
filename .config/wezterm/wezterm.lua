@@ -45,6 +45,7 @@ config.colors = {
 	compose_cursor = "orange",
 }
 -- config.font = wezterm.font('JetBrainsMono Nerd Font Mono', {weight= 'DemiBold'})
+-- config.font = wezterm.font('JetBrainsMono Nerd Font Mono')
 -- config.font = wezterm.font("Liga SFMono Nerd Font", { weight = "DemiBold" })
 -- config.font = wezterm.font("Fira Code", { weight = "DemiBold" })
 config.font = wezterm.font("Fira Code")

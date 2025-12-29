@@ -3,28 +3,38 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         { "williamboman/mason.nvim", cmd = "Mason", opts = {} },
-        {
-            "williamboman/mason-lspconfig.nvim",
-            opts = {
-                ensure_installed = {
-                    "lua_ls",
-                    "pyright",
-                    "clangd",
-                    "cmake",
-                    "ruff",
-                    "bashls",
-                    "dockerls",
-                    "rust_analyzer",
-                },
-                automatic_enable = false,
-            },
-        },
         { "saghen/blink.cmp" },
     },
     config = function()
         local capabilities = require("blink.cmp").get_lsp_capabilities()
         -- capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
-        local servers = require("mason-lspconfig").get_installed_servers()
+
+        local ensure_installed = {
+            "lua-language-server",
+            "pyright",
+            "basedpyright",
+            "ty",
+            "clangd",
+            "cmake-language-server",
+            "ruff",
+            "bash-language-server",
+            "dockerfile-language-server",
+            "rust-analyzer",
+        }
+        local installed_package_names = require("mason-registry").get_installed_package_names()
+        for _, server_name in ipairs(ensure_installed) do
+            if not vim.tbl_contains(installed_package_names, server_name) then
+                vim.cmd(":MasonInstall " .. server_name)
+            end
+        end
+
+        local servers = {}
+        for _, pkg in ipairs(require("mason-registry").get_installed_packages()) do
+            if pkg.spec.neovim and pkg.spec.neovim.lspconfig then
+                table.insert(servers, pkg.spec.neovim.lspconfig)
+            end
+        end
+
         for _, server_name in ipairs(servers) do
             local settings = {}
             local root_dir = nil
@@ -39,9 +49,9 @@ return {
             end
             if server_name == "ty" then
                 settings = {
-                    ty = {
-                        disableLanguageServices = true,
-                    },
+                    -- ty = {
+                    --     disableLanguageServices = true,
+                    -- },
                 }
             end
             if server_name == "pyright" or server_name == "basedpyright" or server_name == "ty" then
@@ -53,9 +63,16 @@ return {
                         cb(root)
                     end
                 end
-            end
-            if server_name == "clangd" then
-                capabilities.offsetEncoding = { "utf-16" }
+                if server_name == "pyright" or server_name == "basedpyright" then
+                    settings = {
+                        pyright = {
+                            disableLanguageServices = true,
+                        },
+                        basedpyright = {
+                            disableLanguageServices = true,
+                        },
+                    }
+                end
             end
 
             vim.lsp.config(server_name, {
@@ -65,13 +82,6 @@ return {
             })
             vim.lsp.enable(server_name)
         end
-
-        local severity_levels = {
-            vim.diagnostic.severity.ERROR,
-            vim.diagnostic.severity.WARN,
-            vim.diagnostic.severity.INFO,
-            vim.diagnostic.severity.HINT,
-        }
 
         vim.diagnostic.config({
             virtual_text = {

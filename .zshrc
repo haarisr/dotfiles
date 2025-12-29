@@ -1,6 +1,7 @@
 # Auto install zap
 # Auto install oh my posh
 # Auto install fzf
+# Auto install fd
 
 # Created by Zap installer
 [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
@@ -35,6 +36,20 @@ export PATH=$CUDA_HOME/bin:$PATH
 export PATH="$HOME/.cargo/bin:$PATH"
 
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$CUDA_HOME/lib64"
+
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+
+export FZF_DEFAULT_OPTS="
+  --height 45%
+  --layout=reverse
+  --border
+  --ansi
+  --preview 'bat --style=numbers --color=always --line-range :200 {} || ls --color=always {}'
+  --preview-window=right:60%
+"
+
 
 # eval "$(oh-my-posh init zsh --config "~/zen.toml")"
 # zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
