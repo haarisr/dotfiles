@@ -1,3 +1,39 @@
+local function vcs_files(opts)
+    opts = opts or {}
+    local cwd = opts.cwd or vim.uv.cwd()
+
+    -- Check for git repo
+    local git_root = vim.fn.finddir(".git", cwd .. ";")
+    if git_root ~= "" then
+        require("telescope.builtin").git_files(opts)
+        return
+    end
+
+    -- Check for jj repo
+    local jj_root = vim.fn.finddir(".jj", cwd .. ";")
+    if jj_root ~= "" then
+        local jj_toplevel = vim.fn.fnamemodify(jj_root, ":h")
+        opts.cwd = jj_toplevel
+        opts.entry_maker = require("telescope.make_entry").gen_from_file(opts)
+
+        require("telescope.pickers")
+            .new(opts, {
+                prompt_title = "JJ Files",
+                finder = require("telescope.finders").new_oneshot_job(
+                    { "jj", "file", "list", "--no-pager" },
+                    opts
+                ),
+                previewer = require("telescope.config").values.grep_previewer(opts),
+                sorter = require("telescope.config").values.file_sorter(opts),
+            })
+            :find()
+        return
+    end
+
+    -- No VCS found
+    vim.notify("Not in a git or jj repository", vim.log.levels.ERROR)
+end
+
 return {
     {
         "nvim-telescope/telescope.nvim",
@@ -54,8 +90,8 @@ return {
                 },
                 {
                     "<C-p>",
-                    builtin.git_files,
-                    desc = "[P]roject git files",
+                    vcs_files,
+                    desc = "[P]roject VCS files (git/jj)",
                 },
                 {
                     "<leader>ps",
