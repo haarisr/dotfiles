@@ -2,6 +2,7 @@ return {
     "yetone/avante.nvim",
     enabled = false,
     event = "VeryLazy",
+    enabled=false,
     version = false, -- Never set this value to "*"! Never!
     init = function()
         -- vim.g.root_spec = { { ".git" }, "lsp", "cwd" }

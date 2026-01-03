@@ -59,6 +59,7 @@ return {
                     local root = vim.fs.root(bufnr, { "uv.lock" })
                         or vim.fs.root(bufnr, { "pyproject.toml" })
                         or vim.fs.root(bufnr, { "setup.py" })
+                        or vim.fs.root(bufnr, {"requirements.txt"})
                     if root then
                         cb(root)
                     end
