@@ -6,4 +6,9 @@ return {
     keys = {
         { "-", "<CMD>Oil<CR>", mode = "n", desc = "Open parent directory" },
     },
+    opts = {
+        view_options = {
+            show_hidden=true,
+        }
+    },
 }
