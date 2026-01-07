@@ -28,9 +28,6 @@ alias audioreload="sudo alsa force-reload"
 export EDITOR="nvim"
 export VISUAL="nvim"
 
-export CC="/usr/bin/gcc-13"
-export CXX="/usr/bin/g++-13"
-
 export CUDA_HOME=/usr/local/cuda-12
 export PATH=$CUDA_HOME/bin:$PATH
 export PATH="$HOME/.cargo/bin:$PATH"
@@ -102,14 +99,20 @@ fi
 
 eval "$(starship init zsh)"
 
+if command -v eza &> /dev/null; then
+    alias ls='eza --icons'
+    alias ll='eza -la --icons'
+    alias l='eza -lA --icons'
+fi
 
-# vf() {
-#     local file
-#     file=$(fzf --height=40% --reverse --preview 'bat --style=numbers --color=always {} || cat {}')
-#     if [ -n "$file" ]; then
-#         nvim "$file"
-#     fi
-# }
+if command -v bat &> /dev/null; then
+    alias cat='bat'
+fi
+
+if command -v zoxide &> /dev/null; then
+    eval "$(zoxide init zsh)"
+    alias cd='z'
+fi
 
 # opencode
 export PATH=/home/haarisr/.opencode/bin:$PATH

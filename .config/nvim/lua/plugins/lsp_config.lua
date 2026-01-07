@@ -4,6 +4,7 @@ return {
     dependencies = {
         { "williamboman/mason.nvim", cmd = "Mason", opts = {} },
         { "saghen/blink.cmp" },
+        { "folke/lazydev.nvim", ft = "lua", opts ={}},
     },
     config = function()
         local capabilities = require("blink.cmp").get_lsp_capabilities()
@@ -24,6 +25,9 @@ return {
         local installed_package_names = require("mason-registry").get_installed_package_names()
         for _, server_name in ipairs(ensure_installed) do
             if not vim.tbl_contains(installed_package_names, server_name) then
+                if server_name == "lua-language-server" then
+                    server_name = "lua-language-server@3.16.4"
+                end
                 vim.cmd(":MasonInstall " .. server_name)
             end
         end
@@ -38,15 +42,6 @@ return {
         for _, server_name in ipairs(servers) do
             local settings = {}
             local root_dir = nil
-            if server_name == "lua_ls" then
-                settings = {
-                    Lua = {
-                        diagnostics = {
-                            globals = { "vim" },
-                        },
-                    },
-                }
-            end
             if server_name == "ty" then
                 settings = {
                     -- ty = {

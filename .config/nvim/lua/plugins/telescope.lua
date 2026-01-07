@@ -34,6 +34,23 @@ local function vcs_files(opts)
     vim.notify("Not in a git or jj repository", vim.log.levels.ERROR)
 end
 
+local function vcs_root(opts)
+    opts = opts or {}
+    local cwd = opts.cwd or vim.uv.cwd()
+
+    local git_root = vim.fn.finddir(".git", cwd .. ";")
+    if git_root ~= "" then
+        return vim.fn.fnamemodify(git_root, ":h")
+    end
+
+    local jj_root = vim.fn.finddir(".jj", cwd .. ";")
+    if jj_root ~= "" then
+        return vim.fn.fnamemodify(jj_root, ":h")
+    end
+
+    return cwd
+end
+
 return {
     {
         "nvim-telescope/telescope.nvim",
@@ -86,7 +103,9 @@ return {
             return {
                 {
                     "<leader>pf",
-                    builtin.find_files,
+                    function()
+                        builtin.find_files({ cwd = vcs_root() })
+                    end,
                     desc = "Find [P]roject [F]iles",
                 },
                 {
@@ -97,7 +116,7 @@ return {
                 {
                     "<leader>ps",
                     function()
-                        builtin.grep_string({ search = vim.fn.input("Grep > ") })
+                        builtin.grep_string({ search = vim.fn.input("Grep > "), cwd = vcs_root() })
                     end,
                     desc = "[P]roject [S]earch",
                 },
@@ -113,12 +132,16 @@ return {
                 },
                 {
                     "<leader>sw",
-                    builtin.grep_string,
+                    function()
+                        builtin.grep_string({ cwd = vcs_root() })
+                    end,
                     desc = "[S]earch current [W]ord",
                 },
                 {
                     "<leader>sg",
-                    builtin.live_grep,
+                    function()
+                        builtin.live_grep({ cwd = vcs_root() })
+                    end,
                     desc = "[S]earch by [G]rep",
                 },
                 {
