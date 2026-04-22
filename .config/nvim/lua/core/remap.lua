@@ -38,15 +38,19 @@ vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
 vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><Left>]],
-    { desc = "Search and replace within file" })
+vim.keymap.set(
+    "n",
+    "<leader>s",
+    [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><Left>]],
+    { desc = "Search and replace within file" }
+)
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { desc = "Make File E[x]ecutable", silent = true })
 
 -- Window movement
-vim.keymap.set('n', '<c-h>', '<c-w>h', { silent = true })
-vim.keymap.set('n', '<c-j>', '<c-w>j', { silent = true })
-vim.keymap.set('n', '<c-k>', '<c-w>k', { silent = true })
-vim.keymap.set('n', '<c-l>', '<c-w>l', { silent = true })
+vim.keymap.set("n", "<c-h>", "<c-w>h", { silent = true })
+vim.keymap.set("n", "<c-j>", "<c-w>j", { silent = true })
+vim.keymap.set("n", "<c-k>", "<c-w>k", { silent = true })
+vim.keymap.set("n", "<c-l>", "<c-w>l", { silent = true })
 
 -- Resize with arrows
 vim.keymap.set("n", "<C-Up>", ":resize +2<CR>", { silent = true })
@@ -61,8 +65,15 @@ vim.keymap.set("v", ">", ">gv")
 
 -- Diagnostic keymaps
 vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float)
-vim.keymap.set("n", "[d", vim.diagnostic.goto_next)
-vim.keymap.set("n", "]d", vim.diagnostic.goto_prev)
--- Tab movement
--- vim.keymap.set('n', '<c-Left>', '<cmd>tabpre<cr>', silent)
--- vim.keymap.set('n', '<c-Right>', '<cmd>tabnext<cr>', silent)
+vim.keymap.set("n", "[d", function()
+    vim.diagnostic.jump({ count = -1 })
+end)
+vim.keymap.set("n", "]d", function()
+    vim.diagnostic.jump({ count = 1 })
+end)
+vim.keymap.set("n", "[e", function()
+    vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR })
+end)
+vim.keymap.set("n", "]e", function()
+    vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
+end)
